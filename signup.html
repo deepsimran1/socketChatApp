@@ -1,0 +1,28 @@
+<!-- signup.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+</head>
+<body>
+    <h2>Sign Up</h2>
+    <form action="/signup" method="POST" enctype="multipart/form-data">
+        <label for="userId">User ID:</label>
+        <input type="text" id="userId" name="userId" required><br>
+
+        <label for="userName">User Name:</label>
+        <input type="text" id="userName" name="userName" required><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br>
+
+        <label for="image">Profile Image:</label>
+        <input type="file" id="image" name="image" accept="image/*"><br>
+
+        <button type="submit">Sign Up</button>
+    </form>
+</body>
+</html>

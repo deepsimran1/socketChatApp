@@ -1,0 +1,32 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+
+
+#chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Set the container to take the full height of the viewport */
+}
+
+#conversation {
+  flex: 1; /* Allow the conversation div to grow and take available space */
+  overflow-y: auto; /* Enable vertical scrolling if the conversation overflows */
+  border: 1px solid black;
+}
+
+#message-form {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #fff;
+  padding: 10px;
+  box-shadow: 0px -1px 5px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for separation */
+}
