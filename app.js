@@ -84,6 +84,7 @@ io.on('connect', (socket) => {
     console.log(`User disconnected: ${socket.id}`);
     onlineUsers[userId] = false;
     io.emit('updateOnlineUsers', Object.keys(onlineUsers));
+    console.log('onlieusers:', onlineUsers);
   });
 });
 

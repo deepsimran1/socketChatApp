@@ -28,7 +28,7 @@ router.get("/signup", (req, res) => {
       console.log("Received data:", userId, userName, password, phoneNumber);
   
       await userController.userSignup(req, res);
-  res.redirect('/login');
+      // res.redirect('/login');
       // res.redirect("/verify-otp?userId=" + userId + "&phoneNumber=" + phoneNumber);
     } catch (error) {
       console.error(error);

@@ -18,15 +18,6 @@ const userController = {
           .json({ success: false, message: "User already exists" });
       }
 
-      // const otp = Math.floor(100000 + Math.random() * 900000);
-      // const message = `Your OTP for registration is: ${otp}`;
-      // await fast2sms.sendMessage({ 
-      //   authorization: process.env.BSGlU4oDvscex85gMIQYq0n3aKFANfLdzZiWJ7XtEphRyV9kO2XCqJEWvbAyuFRfathdOmB7LDc8IrMz,
-      //    message,
-      //     numbers: [phoneNumber] 
-      //   });
-
-      // const response = await fast2sms.sendMessage(options);
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password, salt);
 
@@ -36,17 +27,11 @@ const userController = {
         password: hashedPassword,
         phoneNumber,
         image: image.path,
-        // otp,
       });
 
-      // if (response && response.data) {
-      //   console.log('OTP sent successfully:', otp);
-
-      //   user.otp = otp;
-      // }
+    
       await user.save();
-      // res.render("otpVerification",{userId, phoneNumber});
-      // res.status(201).json({message:"User registered successfully"});
+      res.redirect("/login");
     } catch (error) {
       console.error(error);
       // res.status(500).json({error:"Internal server error",details:error.message});
