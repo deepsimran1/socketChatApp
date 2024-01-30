@@ -25,7 +25,6 @@
     <table class="table">
       <thead>
         <tr>
-          <th>#</th>
           <th>User Id</th>
           <th>User Name</th>
           <th>status</th>
@@ -34,11 +33,10 @@
       </thead>
       <tbody>
         <% if (data) { %>
-          <% data.forEach(function(user, index) { %>
+          <% data.forEach(function(user) { %>
             <tr>
-              <td><%= index + 1 %></td>
               <td><%= user.userId %></td>
-              <td><%= user.userName %></td>
+              <td><%= user.userName.charAt(0).toUpperCase() + user.userName.slice(1) %></td>
               <td class="status">Offline</td>
 
               <td>

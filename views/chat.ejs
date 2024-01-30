@@ -4,119 +4,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Chat</title>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-      crossorigin="anonymous"
-    />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
 
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-    />
-    <link rel="stylesheet" href="style.css" />
-    <audio id="message-sound">
-      <source src="/sounds/sound.mp3" type="audio/mpeg" />
-      Your browser does not support the audio element.
-    </audio>
-    <style>
-      body {
-        margin-bottom: 60px;
-      }
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 
-      #message-form {
-        position: fixed;
-        bottom: 0;
-        width: 100%;
-        background-color: #f8f9fa;
-        padding: 10px;
-        box-shadow: 0px -5px 5px -5px rgba(0, 0, 0, 0.2);
-      }
-
-      #message-input {
-        width: calc(100% - 20px);
-        margin-right: 10px;
-      }
-
-      #message-form button {
-        width: 80px;
-      }
-      .input-group {
-        display: flex;
-        width: 100%;
-      }
-
-      #message-input {
-        flex: 1;
-        margin-right: 10px;
-      }
-
-      #message-form button {
-        width: auto;
-      }
-      .message-container {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .message-container-i {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .receiver-message {
-        background-color: #e6e6e6;
-        padding: 10px;
-        border-radius: 10px;
-        margin-bottom: 5px;
-        max-width: 70%;
-      }
-
-      .sender-message {
-        background-color: #007bff;
-        color: white;
-        padding: 10px;
-        border-radius: 10px;
-        margin-bottom: 5px;
-        max-width: 70%;
-        align-self: flex-end;
-      }
-      .sender-message-i {
-        background-color: #007bff;
-        color: white;
-        padding: 10px;
-        border-radius: 10px;
-        margin-bottom: 5px;
-        max-width: 70%;
-        align-self: flex-end;
-      }
-      .app-top {
-        background-color: #f8f9fa;
-        padding: 10px 20px 0px;
-        display: flex;
-        align-items: center;
-        position: sticky;
-        top: 0px;
-        margin-bottom: 5px;
-      }
-      .app-top svg {
-        cursor: pointer;
-        display: inline-block;
-      }
-      .icon {
-        width: 2% !important;
-        margin: 0px 15px 0px 0px;
-      }
-      .name {
-        width: 96% !important;
-        line-height: 20px;
-      }
-    </style>
+    <link href="/stylesheets/style.css" rel="stylesheet" type="text/css"> 
+   
   </head>
   <body>
+    <audio id="myAudio">
+      <source src="/sounds/sound.mp3" type="audio/mpeg">
+      Your browser does not support the audio element.
+  </audio>
+
     <script>
       console.log("Receiver Image Path:", "<%= receiverImage %>");
     </script>
@@ -134,18 +34,18 @@
           />
         </svg>
       </span>
-      <span>
-        <img
-          src="<%= receiverImage %>"
+      <span class="mr-3">
+        <img 
+          src="/<%= receiverImage %>"
           alt="Image"
-          style="height: 18px; width: 18px; border-radius: 50%"
+          style="height: 45px; width: 45px; border-radius: 50%"
         />
       </span>
       <span class="name">
         <span style="text-transform: capitalize" class="pb-0 mb-0"
           ><%= receiverName %></span
         ><br />
-        <span id="user-status">Offline</span>
+        <span id="user-status" class="ml-1">Offline</span>
       </span>
       <span class="dropdown show">
         <a
@@ -206,41 +106,54 @@
         <% } %>
       </div>
     </div>
-    <form
-      id="message-form"
-      action="/chat/<%= receiverUserId %>"
-      method="post"
-      enctype="multipart/form-data"
-    >
+    <form id="message-form" action="/chat/<%= receiverUserId %>" method="post" enctype="multipart/form-data" >
       <div class="input-group">
-        <input
-          class="form-control"
-          id="message-input"
-          type="text"
-          name="message"
-          placeholder="Type your message"
-        />
-        <div class="input-group-append">
-          <button class="btn btn-primary" type="submit">
+        <input class="form-control" id="message-input" type="text" name="message" placeholder="Type your message" />
+        <div class="input-group-append" id ="send-button-container" style="display:none;">
+          <button class="btn btn-primary" type="submit" id="send_msg">
             <i style="color: white">Send</i>
           </button>
         </div>
       </div>
     </form>
 
+   
+    
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+   
     <script>
-      function playMessageSound() {
-        const messageSound = (document.getElementById(
-          "message-sound"
-        ).muted = false);
-        if (messageSound) {
-          messageSound.play();
-          console.log("Message sound played.");
-        } else {
-          console.error("Message sound element not found.");
-        }
-      }
+      document.addEventListener('DOMContentLoaded', function() {
+        const audio = document.getElementById('myAudio');
+        const playButton = document.getElementById('send_msg');
+        const sendButtonContainer = document.getElementById('send-button-container');
+        const messageInput = document.getElementById('message-input');
+        
+        messageInput.addEventListener('input', function() {
+          if (messageInput.value.trim() !== '') {
+            sendButtonContainer.style.display = 'block'; // Show the send button
+          } else {
+            sendButtonContainer.style.display = 'none'; // Hide the send button
+          }
+        });
+
+        playButton.addEventListener('click', function(){
+          audio.play();
+          sendButtonContainer.style.display = 'none';
+        });
+
+        scrollToBottom();
+      });
+
+      const scrollToBottom=()=> {
+    const conversation = document.getElementById('conversation');
+    const lastMessage = conversation.lastElementChild;
+    if (lastMessage) {
+      lastMessage.scrollIntoView();
+    }
+  }
+
+
 
       function redirectToUserList() {
         window.location.href = "/userList";
@@ -268,6 +181,8 @@
     }
       });
 
+      
+
       document
         .getElementById("message-form")
         .addEventListener("submit", function (event) {
@@ -284,7 +199,7 @@
           });
 
           messageInput.value = "";
-          playMessageSound();
+          scrollToBottom();
         });
 
       socket.on("chat", function (data) {
@@ -292,11 +207,13 @@
         appendMessageToConversation(data);
         playMessageSound();
         socket.emit("messageSent", data);
+        scrollToBottom();
       });
 
       socket.on("messageSent", function (data) {
         console.log("Received messageSent data:", data);
         appendSenderToConversation(data);
+        scrollToBottom();
       });
 
       function appendMessageToConversation(data) {
@@ -318,6 +235,7 @@
             `;
 
         conversationDiv.appendChild(newMessageDiv);
+        scrollToBottom();
       }
 
       function appendSenderToConversation(data) {
@@ -341,20 +259,9 @@
         conversationDiv.appendChild(newMessageDiv);
       }
     </script>
-    <script
-      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
-      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
-      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-      crossorigin="anonymous"
-    ></script>
+    
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous" ></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous" ></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous" ></script>
   </body>
 </html>

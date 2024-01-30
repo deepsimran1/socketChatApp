@@ -1,32 +1,94 @@
+
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-}
-
-a {
-  color: #00B7FF;
-}
-
-
-
-#chat-container {
-  display: flex;
-  flex-direction: column;
-  height: 100vh; /* Set the container to take the full height of the viewport */
-}
-
-#conversation {
-  flex: 1; /* Allow the conversation div to grow and take available space */
-  overflow-y: auto; /* Enable vertical scrolling if the conversation overflows */
-  border: 1px solid black;
+  margin-bottom: 60px;
 }
 
 #message-form {
   position: fixed;
-  top: 0;
-  left: 0;
+  bottom: 0;
   width: 100%;
-  background-color: #fff;
+  background-color: #f8f9fa;
   padding: 10px;
-  box-shadow: 0px -1px 5px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for separation */
+  box-shadow: 0px -5px 5px -5px rgba(0, 0, 0, 0.2);
+}
+
+#message-input {
+  width: calc(100% - 20px);
+  margin-right: 10px;
+}
+
+#message-form button {
+  width: 80px;
+}
+.input-group {
+  display: flex;
+  width: 100%;
+}
+
+#message-input {
+  flex: 1;
+  margin-right: 10px;
+}
+
+#message-form button {
+  width: auto;
+}
+.message-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.message-container-i {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.receiver-message {
+  background-color: #e6e6e6;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 5px;
+  max-width: 70%;
+}
+
+.sender-message {
+  background-color: #007bff;
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 5px;
+  max-width: 70%;
+  align-self: flex-end;
+}
+.sender-message-i {
+  background-color: #007bff;
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 5px;
+  max-width: 70%;
+  align-self: flex-end;
+}
+.app-top {
+  background-color: #f8f9fa;
+  padding: 11px 20px 11px;
+  display: flex;
+  align-items: center;
+  position: sticky;
+  top: 0px;
+  margin-bottom: 5px;
+}
+.app-top svg {
+  cursor: pointer;
+  display: inline-block;
+}
+.icon {
+  width: 2% !important;
+  margin: 0px 15px 0px 0px;
+}
+.name {
+  width: 96% !important;
+  line-height: 20px;
 }
