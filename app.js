@@ -7,11 +7,10 @@ const app = express();
 const server = require('http').createServer(app);
 const io = socketIo(server);
 const port = 3000;
-const messageController = require('./controllers/messageController');
 const jwt = require('jsonwebtoken');
+const Message = require('./models/message');
 
-var userRouter = require('./routes/user');
-var viewRouter = require('./routes/view');
+var viewRouter = require('./routes/routes');
 
 
 connectDB();
@@ -24,7 +23,7 @@ app.use(express.static(__dirname + '/public'));
 app.use('/uploads', express.static('uploads'));
 
 
-app.use('/user', userRouter);
+
 app.use('/', viewRouter);
 
 
@@ -44,28 +43,39 @@ io.use((socket, next) => {
   }
 });
 
-const onlineUsers={};
+const onlineUsers = {};
 
 io.on('connect', (socket) => {
+  
+  onlineUsers[socket.id] = true;
+  io.sockets.emit('userOnline',Object.keys(onlineUsers));
+  // io.emit('userOnline',Object.keys(onlineUsers));
   console.log(`User connected: ${socket.id}`);
+  console.log('onlineusers', onlineUsers);
 
- 
-
-  const userId = socket.id;
-  onlineUsers[userId] = true;
-  io.emit('updateOnlineUsers', Object.keys(onlineUsers));
-  console.log('onlieusers:', onlineUsers);
+  
 
   socket.on('chat', async (data) => {
     console.log('data', data)
     try {
       const { receiverUserId, message } = data;
       console.log("Emitted cht data:", data);
-      socket.emit('message', data);
+
+      const conversationId = `${socket.id}_${receiverUserId}_${Date.now()}`;
+
+      const newMessage = new Message({
+        sender: socket.id,
+        receiver: receiverUserId,
+        message: message,
+        conversationId: conversationId,
+      });
+      await newMessage.save();
+      
+      
       socket.to(receiverUserId).emit('chat', data);
       
-      const result = await messageController.chat(socket.id, receiverUserId, message);
-      socket.emit('messageSent', { senderId: socket.id, receiverUserId, message, conversationId: result.conversationId });
+
+      socket.emit('messageSent', { senderId: socket.id, receiverUserId, message, conversationId });
 
     } catch (error) {
       console.error(error);
@@ -73,18 +83,15 @@ io.on('connect', (socket) => {
     console.log("data", data);
   });
 
-  socket.on('checkOnlineStatus', (data) => {
-    const { receiverUserId } = data;
-    const isOnline = onlineUsers[receiverUserId] || false;
-    socket.emit('updateOnlineStatus', isOnline);
-  });
+ 
 
 
   socket.on('disconnect', () => {
+    delete onlineUsers[socket.id];
+    io.sockets.emit('userOnline',Object.keys(onlineUsers));
     console.log(`User disconnected: ${socket.id}`);
-    onlineUsers[userId] = false;
-    io.emit('updateOnlineUsers', Object.keys(onlineUsers));
-    console.log('onlieusers:', onlineUsers);
+    console.log('onlineusers', onlineUsers);
+    
   });
 });
 
